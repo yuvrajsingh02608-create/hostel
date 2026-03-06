@@ -50,7 +50,7 @@ const ComplaintDetailView: React.FC<ComplaintDetailViewProps> = ({ complaint }) 
             Resolution Summary
           </h3>
           <p className="text-text-primary italic leading-relaxed">
-            "{complaint.resolutionNote}"
+            &quot;{complaint.resolutionNote}&quot;
           </p>
         </div>
       )}

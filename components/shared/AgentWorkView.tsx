@@ -91,7 +91,7 @@ const AgentWorkView: React.FC<AgentWorkViewProps> = ({ complaint, onUpdate }) =>
             <span className="font-bold">{complaint.roomNumber}</span>
           </div>
           <p className="text-sm text-text-primary pt-2 border-t border-border mt-2 italic">
-            "{complaint.description}"
+            &quot;{complaint.description}&quot;
           </p>
         </div>
       </div>
