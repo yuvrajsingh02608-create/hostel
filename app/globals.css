@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: 26 86 219; /* #1A56DB */
+  --primary-light: 235 242 255;
+  --accent: 245 158 11;
+  --success: 16 185 129;
+  --danger: 239 68 68;
+  --surface: 243 244 246; /* Slate-50 - Slightly off-white surface */
+  --card: 255 255 255;
+  --border: 226 232 240;
+  --text-primary: 15 23 42;
+  --text-muted: 100 116 139;
+  --sidebar-bg: 15 23 42; /* Keep sidebar dark in light mode too, or make it a very distinct light color? Dark looks more premium. */
+  --sidebar-text: 203 213 225;
+}
+
+.dark {
+  --primary: 60 131 246; /* Lighter primary for dark mode */
+  --primary-light: 30 58 138;
+  --surface: 8 12 21; /* Darker background for depth */
+  --card: 17 24 39; /* Mid-tone for cards */
+  --border: 31 41 55; /* Refined borders */
+  --text-primary: 243 244 246;
+  --text-muted: 156 163 175;
+  --sidebar-bg: 17 24 39;
+  --sidebar-text: 243 244 246;
+}
+
+@layer base {
+  /* Global theme shift synchronization */
+  body, .bg-card, .bg-surface, .bg-sidebar-bg, 
+  aside, main, nav, .border, .border-border, 
+  h1, h2, h3, h4, h5, h6, p, span, label, input, button {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  body {
+    @apply bg-surface text-text-primary;
+  }
+}
+
+@layer components {
+  .rounded-card { border-radius: 1rem; }
+  .rounded-button { border-radius: 0.75rem; }
+  .rounded-badge { border-radius: 9999px; }
+  
+  .shadow-card {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+}
+
+/* next-intl pulse animation */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

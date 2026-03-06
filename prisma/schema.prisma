@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String     @unique
+  password    String
+  role        Role       @default(RESIDENT)
+  roomNumber  String?
+  department  String?    // for agents
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  complaints  Complaint[] @relation("ResidentComplaints")
+  assigned    Complaint[] @relation("AgentAssignments")
+}
+
+model Complaint {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  category    Category
+  priority    Priority      @default(NORMAL)
+  status      Status        @default(OPEN)
+  roomNumber  String
+  attachments String[]      // Supabase URLs
+  resolutionNote String?
+  internalNote   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  resident    User          @relation("ResidentComplaints", fields: [residentId], references: [id])
+  residentId  String        @db.ObjectId
+  agent       User?         @relation("AgentAssignments", fields: [agentId], references: [id])
+  agentId     String?       @db.ObjectId
+  timeline    TimelineEvent[]
+}
+
+model TimelineEvent {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  action      String
+  note        String?
+  actorId     String    @db.ObjectId
+  actorName   String
+  actorRole   Role
+  createdAt   DateTime  @default(now())
+  complaint   Complaint @relation(fields: [complaintId], references: [id])
+  complaintId String    @db.ObjectId
+}
+
+model Announcement {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String
+  target    Target   @default(ALL)
+  isActive  Boolean  @default(true)
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  createdBy String   @db.ObjectId
+}
+
+enum Role {
+  RESIDENT
+  AGENT
+  ADMIN
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  URGENT
+}
+
+enum Category {
+  WIFI
+  MAINTENANCE
+  FOOD
+  HOUSEKEEPING
+  SECURITY
+  OTHER
+}
+
+enum Priority {
+  NORMAL
+  URGENT
+}
+
+enum Target {
+  ALL
+  RESIDENTS_ONLY
+  AGENTS_ONLY
+}

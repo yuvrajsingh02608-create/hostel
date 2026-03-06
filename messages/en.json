@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "complaints": "Complaints",
+    "users": "User Management",
+    "announcements": "Announcements",
+    "reports": "Reports",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "welcome": "Good morning, {name} 👋",
+    "room_chip": "Room {room}",
+    "total_complaints": "Total Complaints",
+    "open": "Open",
+    "in_progress": "In Progress",
+    "resolved": "Resolved",
+    "urgent": "Urgent",
+    "avg_resolution": "Avg Resolution",
+    "active_agents": "Active Agents",
+    "registered_residents": "Registered Residents",
+    "submit_cta_title": "Have an issue? Let us know.",
+    "submit_cta_sub": "We'll assign a technician within 2 hours.",
+    "submit_button": "+ Submit Complaint",
+    "recent_complaints": "My Recent Complaints",
+    "view_all": "View All →",
+    "task_queue": "My Task Queue",
+    "resolved_today": "Resolved Today",
+    "resolved_history": "Resolved History",
+    "global_stats": "Global Statistics",
+    "complaints_over_time": "Complaints Over Time",
+    "complaints_by_category": "Complaints by Category"
+  },
+  "complaint": {
+    "id": "ID",
+    "title": "Title",
+    "category": "Category",
+    "status": "Status",
+    "submitted": "Submitted",
+    "last_updated": "Last Updated",
+    "action": "Action",
+    "priority": "Priority",
+    "description": "Description",
+    "attachments": "Attachments",
+    "agent_assigned": "Agent Assigned",
+    "timeline": "Timeline",
+    "resolution_note": "Resolution Note",
+    "internal_note": "Internal Note",
+    "normal": "Normal",
+    "urgent": "Urgent",
+    "categories": {
+      "WIFI": "WiFi",
+      "MAINTENANCE": "Maintenance",
+      "FOOD": "Food",
+      "HOUSEKEEPING": "Housekeeping",
+      "SECURITY": "Security",
+      "OTHER": "Other"
+    },
+    "statuses": {
+      "OPEN": "Open",
+      "IN_PROGRESS": "In Progress",
+      "RESOLVED": "Resolved",
+      "CLOSED": "Closed",
+      "URGENT": "Urgent"
+    }
+  },
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "view": "View",
+    "assign": "Assign",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close",
+    "loading": "Loading...",
+    "search": "Search..."
+  },
+  "auth": {
+    "login_title": "Sign In",
+    "login_tagline": "Your voice. Our priority.",
+    "email": "Email Address",
+    "password": "Password",
+    "forgot_password": "Forgot Password?",
+    "register_link": "Don't have an account? Register",
+    "register_title": "Create Account",
+    "full_name": "Full Name",
+    "confirm_password": "Confirm Password",
+    "room_number": "Room Number",
+    "phone": "Phone (optional)",
+    "sign_in_button": "Sign In",
+    "register_button": "Register"
+  },
+  "announcement": {
+    "banner_title": "Announcement",
+    "post_new": "Post New Announcement",
+    "title": "Title",
+    "body": "Message Body",
+    "target": "Target Audience",
+    "expiry": "Expiry Date",
+    "active": "Active"
+  },
+  "landing": {
+    "hero_title_1": "Your Stay,",
+    "hero_title_2": "Our Priority.",
+    "get_started": "Get Started",
+    "tagline": "The ultimate Hostel Complaint Management System. Seamlessly bridging the gap between residents and maintenance teams.",
+    "new_support": "NEW: Hindi Language Support Now Live!"
+  },
+  "errors": {
+    "notFound_title": "Page Not Found",
+    "notFound_description": "We couldn't find the page you're looking for. It might have been moved or deleted.",
+    "back_home": "Back to Home"
+  }
+}

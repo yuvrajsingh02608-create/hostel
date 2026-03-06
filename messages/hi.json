@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "complaints": "शिकायतें",
+    "users": "उपयोगकर्ता प्रबंधन",
+    "announcements": "घोषणाएं",
+    "reports": "रिपोर्ट",
+    "settings": "सेटिंग्स",
+    "logout": "लॉगआउट"
+  },
+  "dashboard": {
+    "welcome": "सुप्रभात, {name} 👋",
+    "room_chip": "कमरा {room}",
+    "total_complaints": "कुल शिकायतें",
+    "open": "खुला",
+    "in_progress": "प्रगति में",
+    "resolved": "हल हो गया",
+    "urgent": "अत्यावश्यक",
+    "avg_resolution": "औसत समाधान समय",
+    "active_agents": "सक्रिय एजेंट",
+    "registered_residents": "पंजीकृत निवासी",
+    "submit_cta_title": "कोई समस्या है? हमें बताएं।",
+    "submit_cta_sub": "हम 2 घंटे के भीतर एक तकनीशियन नियुक्त करेंगे।",
+    "submit_button": "+ शिकायत दर्ज करें",
+    "recent_complaints": "मेरी हालिया शिकायतें",
+    "view_all": "सभी देखें →",
+    "task_queue": "मेरा कार्य कतार",
+    "resolved_today": "आज हल किया गया",
+    "resolved_history": "हल इतिहास",
+    "global_stats": "वैश्विक आंकड़े",
+    "complaints_over_time": "समय के साथ शिकायतें",
+    "complaints_by_category": "श्रेणी के अनुसार शिकायतें"
+  },
+  "complaint": {
+    "id": "आईडी",
+    "title": "शीर्षक",
+    "category": "श्रेणी",
+    "status": "स्थिति",
+    "submitted": "जमा किया गया",
+    "last_updated": "अंतिम अपडेट",
+    "action": "कार्रवाई",
+    "priority": "प्राथमिकता",
+    "description": "विवरण",
+    "attachments": "संलग्नक",
+    "agent_assigned": "नियुक्त एजेंट",
+    "timeline": "समयरेखा",
+    "resolution_note": "समाधान नोट",
+    "internal_note": "आंतरिक नोट",
+    "normal": "सामान्य",
+    "urgent": "अत्यावश्यक",
+    "categories": {
+      "WIFI": "वाई-फाई",
+      "MAINTENANCE": "रखरखाव",
+      "FOOD": "भोजन",
+      "HOUSEKEEPING": "हाउसकीपिंग",
+      "SECURITY": "सुरक्षा",
+      "OTHER": "अन्य"
+    },
+    "statuses": {
+      "OPEN": "खुला",
+      "IN_PROGRESS": "प्रगति में",
+      "RESOLVED": "हल हो गया",
+      "CLOSED": "बंद",
+      "URGENT": "अत्यावश्यक"
+    }
+  },
+  "common": {
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "view": "देखें",
+    "assign": "सौपें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "save": "सहेजें",
+    "close": "बंद करें",
+    "loading": "लोड हो रहा है...",
+    "search": "खोजें..."
+  },
+  "auth": {
+    "login_title": "साइन इन करें",
+    "login_tagline": "आपका आराम, हमारी प्राथमिकता।",
+    "email": "ईमेल पता",
+    "password": "पासवर्ड",
+    "forgot_password": "पासवर्ड भूल गए?",
+    "register_link": "खाता नहीं है? रजिस्टर करें",
+    "register_title": "खाता बनाएं",
+    "full_name": "पूरा नाम",
+    "confirm_password": "पासवर्ड की पुष्टि करें",
+    "room_number": "कमरा नंबर",
+    "phone": "फ़ोन (वैकल्पिक)",
+    "sign_in_button": "साइन इन करें",
+    "register_button": "रजिस्टर करें"
+  },
+  "announcement": {
+    "banner_title": "घोषणा",
+    "post_new": "नई घोषणा पोस्ट करें",
+    "title": "शीर्षक",
+    "body": "संदेश",
+    "target": "लक्षित दर्शक",
+    "expiry": "समाप्ति तिथि",
+    "active": "सक्रिय"
+  },
+  "landing": {
+    "hero_title_1": "आपका प्रवास,",
+    "hero_title_2": "हमारी प्राथमिकता।",
+    "get_started": "शुरू करें",
+    "tagline": "परम हॉस्टल शिकायत प्रबंधन प्रणाली। निवासियों और रखरखाव टीमों के बीच की खाई को सहजता से पाटता है।",
+    "new_support": "नया: हिंदी भाषा सपोर्ट अब लाइव है!"
+  },
+  "errors": {
+    "notFound_title": "पृष्ठ नहीं मिला",
+    "notFound_description": "हमें वह पृष्ठ नहीं मिला जिसे आप ढूंढ रहे हैं। हो सकता है कि इसे हटा दिया गया हो या स्थानांतरित कर दिया गया हो।",
+    "back_home": "होम पर वापस जाएं"
+  }
+}
