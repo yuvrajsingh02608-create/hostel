@@ -60,61 +60,57 @@ export async function PATCH(
 
         const oldStatus = complaint.status;
 
-        const updatedComplaint = await prisma.$transaction(async (tx) => {
-            const updated = await tx.complaint.update({
-                where: { id: params.id },
-                data: {
-                    ...(status && { status }),
-                    ...(agentId && { agentId }),
-                    ...(resolutionNote && { resolutionNote }),
-                    ...(internalNote && { internalNote }),
-                    ...(priority && { priority }),
-                },
-            });
-
-            // Log timeline events for changes
-            if (status && status !== oldStatus) {
-                await tx.timelineEvent.create({
-                    data: {
-                        complaintId: params.id,
-                        action: `STATUS_CHANGED`,
-                        note: `Status updated from ${oldStatus} to ${status}`,
-                        actorId: userId,
-                        actorName: userName,
-                        actorRole: userRole,
-                    }
-                });
-            }
-
-            if (agentId && agentId !== complaint.agentId) {
-                const agent = await tx.user.findUnique({ where: { id: agentId }, select: { name: true } });
-                await tx.timelineEvent.create({
-                    data: {
-                        complaintId: params.id,
-                        action: `AGENT_ASSIGNED`,
-                        note: agent ? `Assigned to ${agent.name}` : `Agent assignment updated`,
-                        actorId: userId,
-                        actorName: userName,
-                        actorRole: userRole,
-                    }
-                });
-            }
-
-            if (resolutionNote) {
-                await tx.timelineEvent.create({
-                    data: {
-                        complaintId: params.id,
-                        action: `RESOLVED`,
-                        note: resolutionNote,
-                        actorId: userId,
-                        actorName: userName,
-                        actorRole: userRole,
-                    }
-                });
-            }
-
-            return updated;
+        const updatedComplaint = await prisma.complaint.update({
+            where: { id: params.id },
+            data: {
+                ...(status && { status }),
+                ...(agentId && { agentId }),
+                ...(resolutionNote && { resolutionNote }),
+                ...(internalNote && { internalNote }),
+                ...(priority && { priority }),
+            },
         });
+
+        // Log timeline events for changes
+        if (status && status !== oldStatus) {
+            await prisma.timelineEvent.create({
+                data: {
+                    complaintId: params.id,
+                    action: `STATUS_CHANGED`,
+                    note: `Status updated from ${oldStatus} to ${status}`,
+                    actorId: userId,
+                    actorName: userName,
+                    actorRole: userRole,
+                }
+            });
+        }
+
+        if (agentId && agentId !== complaint.agentId) {
+            const agent = await prisma.user.findUnique({ where: { id: agentId }, select: { name: true } });
+            await prisma.timelineEvent.create({
+                data: {
+                    complaintId: params.id,
+                    action: `AGENT_ASSIGNED`,
+                    note: agent ? `Assigned to ${agent.name}` : `Agent assignment updated`,
+                    actorId: userId,
+                    actorName: userName,
+                    actorRole: userRole,
+                }
+            });
+        }
+
+        if (resolutionNote) {
+            await prisma.timelineEvent.create({
+                data: {
+                    complaintId: params.id,
+                    action: `RESOLVED`,
+                    note: resolutionNote,
+                    actorId: userId,
+                    actorName: userName,
+                    actorRole: userRole,
+                }
+            });
+        }
 
         return NextResponse.json(updatedComplaint);
     } catch (error) {

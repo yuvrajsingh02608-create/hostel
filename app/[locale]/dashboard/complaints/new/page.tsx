@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter, Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -14,9 +14,12 @@ import {
   Upload, 
   CheckCircle2,
   AlertTriangle,
-  Loader2
+  Loader2,
+  X,
+  ImageIcon
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { supabase } from "@/lib/supabase";
 
 const CATEGORIES = [
   "WIFI", "MAINTENANCE", "FOOD", "HOUSEKEEPING", "SECURITY", "OTHER"
@@ -27,6 +30,8 @@ export default function NewComplaintPage() {
   const commonT = useTranslations('common');
   const { data: session } = useSession();
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -36,28 +41,95 @@ export default function NewComplaintPage() {
     roomNumber: (session?.user as any)?.roomNumber || "",
   });
 
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      if (selectedFiles.length + files.length > 5) {
+        alert("Maximum 5 files allowed");
+        return;
+      }
+      setSelectedFiles(prev => [...prev, ...files]);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadFiles = async (): Promise<string[]> => {
+    if (!supabase) {
+      console.error("Supabase client is not initialized. Please check your environment variables.");
+      return [];
+    }
+
+    const urls: string[] = [];
+    for (const file of selectedFiles) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `complaints/${fileName}`;
+
+      const { data, error } = await supabase.storage
+        .from('complaints')
+        .upload(filePath, file);
+
+      if (error) {
+        console.error("Upload error:", error);
+        continue;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('complaints')
+        .getPublicUrl(filePath);
+      
+      urls.push(publicUrl);
+    }
+    return urls;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      let attachmentUrls: string[] = [];
+      if (selectedFiles.length > 0) {
+        if (!supabase) {
+          alert("Photo upload is currently unavailable. Please provide Supabase credentials in .env.local");
+          setLoading(false);
+          return;
+        }
+        setUploading(true);
+        attachmentUrls = await uploadFiles();
+        setUploading(false);
+      }
+
       const res = await fetch("/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          attachments: attachmentUrls
+        }),
       });
 
       if (res.ok) {
         router.push("/dashboard?success=true");
       } else {
-        alert("Failed to submit complaint");
+        const error = await res.json();
+        alert(error.error || "Failed to submit complaint");
       }
     } catch (err) {
       console.error(err);
+      alert("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
   };
+
+  const [dismissWarning, setDismissWarning] = useState(false);
 
   return (
     <DashboardLayout role="RESIDENT">
@@ -68,6 +140,24 @@ export default function NewComplaintPage() {
             Back to Dashboard
           </Button>
         </Link>
+
+        {supabase?.isMock && !dismissWarning && (
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-card mb-6 flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-start gap-3">
+              <ImageIcon className="h-5 w-5 text-blue-500 mt-0.5" />
+              <div>
+                <p className="text-sm font-bold text-blue-800">Development Mock Mode</p>
+                <p className="text-xs text-blue-700">Supabase is not configured. Photo uploads will work using placeholder images for testing.</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setDismissWarning(true)}
+              className="text-blue-400 hover:text-blue-600 p-1"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
 
         <div className="bg-white rounded-card shadow-card border border-border p-8">
           <div className="mb-8">
@@ -96,7 +186,7 @@ export default function NewComplaintPage() {
                 <Label htmlFor="category">{t('category')}</Label>
                 <select
                   id="category"
-                  className="w-full h-10 px-3 rounded-button border border-border bg-white text-sm focus:ring-2 focus:ring-primary"
+                  className="w-full h-10 px-3 rounded-button border border-border bg-white text-sm focus:ring-2 focus:ring-primary focus:outline-none"
                   value={formData.category}
                   onChange={(e) => setFormData({...formData, category: e.target.value})}
                 >
@@ -157,28 +247,66 @@ export default function NewComplaintPage() {
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
               />
-              <p className="text-[10px] text-text-muted italic">Min. 20 characters</p>
+              <p className={`text-[10px] italic ${formData.description.length < 10 ? 'text-text-muted' : 'text-success'}`}>
+                {formData.description.length < 10 ? 'Min. 10 characters' : '✓ Length looks good'}
+              </p>
             </div>
 
             <div className="space-y-2">
               <Label>{t('attachments')}</Label>
-              <div className="border-2 border-dashed border-border rounded-card p-8 text-center hover:bg-surface transition-colors cursor-pointer group">
+              <input 
+                type="file" 
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                multiple
+                className="hidden"
+              />
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="border-2 border-dashed border-border rounded-card p-8 text-center hover:bg-surface transition-colors cursor-pointer group"
+              >
                 <Upload className="h-8 w-8 text-text-muted/40 mx-auto mb-2 group-hover:text-primary transition-colors" />
                 <p className="text-sm font-medium text-text-muted group-hover:text-text-primary">Click to upload photos</p>
                 <p className="text-[10px] text-text-muted mt-1">PNG, JPG up to 10MB (Max 5 files)</p>
               </div>
+
+              {selectedFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {selectedFiles.map((file, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 bg-surface rounded-card border border-border">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 bg-white rounded-md border border-border flex items-center justify-center text-text-muted">
+                          <ImageIcon className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-text-primary truncate max-w-[200px]">{file.name}</p>
+                          <p className="text-[10px] text-text-muted">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                        </div>
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => removeFile(idx)}
+                        className="p-1 hover:bg-danger-light rounded-full text-text-muted hover:text-danger"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="pt-4">
               <Button 
                 type="submit" 
                 className="w-full h-12 text-base font-bold"
-                disabled={loading || formData.description.length < 20}
+                disabled={loading || uploading || formData.description.length < 10}
               >
-                {loading ? (
+                {loading || uploading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Submitting...
+                    {uploading ? 'Uploading photos...' : 'Submitting...'}
                   </>
                 ) : (
                   'Submit Complaint'

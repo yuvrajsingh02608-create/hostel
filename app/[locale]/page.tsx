@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/routing";
 import { ArrowRight, Shield, Clock, Zap, MessageSquare } from "lucide-react";
+import LanguageToggle from "@/components/shared/language-toggle";
 
 import { useTranslations } from "next-intl";
 
@@ -13,10 +14,15 @@ export default function Home() {
                     <div className="h-10 w-10 bg-[#1E3A5F] rounded-xl flex items-center justify-center text-white font-serif font-bold text-xl shadow-lg">N</div>
                     <span className="text-2xl font-serif font-bold tracking-tight text-[#1E3A5F] dark:text-white">NivaasDesk</span>
                 </div>
-                <div className="hidden md:flex items-center space-x-8 text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    <Link href="#features" className="hover:text-[#F97316] transition-colors">Features</Link>
-                    <Link href="#solutions" className="hover:text-[#F97316] transition-colors">Solutions</Link>
-                    <Link href="/login" className="bg-[#1E3A5F] text-white px-6 py-2.5 rounded-xl shadow-lg shadow-blue-200 hover:scale-105 transition-all">Get Started</Link>
+                <div className="flex items-center space-x-4 md:space-x-8">
+                    <div className="hidden md:flex items-center space-x-8 text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                        <Link href="#features" className="hover:text-[#F97316] transition-colors">Features</Link>
+                        <Link href="#solutions" className="hover:text-[#F97316] transition-colors">Solutions</Link>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                        <LanguageToggle />
+                        <Link href="/login" className="bg-[#1E3A5F] text-white px-6 py-2.5 rounded-xl shadow-lg shadow-blue-200 hover:scale-105 transition-all text-sm font-bold uppercase tracking-wider">Get Started</Link>
+                    </div>
                 </div>
             </nav>
 

@@ -48,6 +48,7 @@
     "internal_note": "Internal Note",
     "normal": "Normal",
     "urgent": "Urgent",
+    "room_number": "Room Number",
     "categories": {
       "WIFI": "WiFi",
       "MAINTENANCE": "Maintenance",

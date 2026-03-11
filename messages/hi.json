@@ -48,6 +48,7 @@
     "internal_note": "आंतरिक नोट",
     "normal": "सामान्य",
     "urgent": "अत्यावश्यक",
+    "room_number": "कमरा नंबर",
     "categories": {
       "WIFI": "वाई-फाई",
       "MAINTENANCE": "रखरखाव",
